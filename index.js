@@ -12,6 +12,19 @@ const STORE = {
   searchVal: ''
 };
 
+function changeTitle(val,index){
+  STORE.items[index].name = val; 
+}
+
+function changeTitleListener(){
+  $('.js-shopping-list').on('click', '#change-title-button', event => {
+    const val = $(event.currentTarget).closest('li').find('.change-title').val();
+    const index = $(event.currentTarget).closest('li').data('item-index');
+    changeTitle(val,index);
+    renderShoppingList();
+  });
+}
+
 function filterSearchName(val){
   STORE.searchVal = val;
 }
@@ -47,6 +60,8 @@ function checkedListener(){
 function generateItemElement(item, itemIndex, template) {
   return `
     <li class="js-item-index-element" data-item-index="${itemIndex}">
+      <input type="text" name="change-title" class="change-title" placeholder="change-title">
+      <button type="button" id="change-title-button">Change</button>
       <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
@@ -147,6 +162,7 @@ function handleShoppingList() {
   checkedListener();
   searchListener();
   showALL();
+  changeTitleListener();
 }
 
 // when the page loads, call `handleShoppingList`
