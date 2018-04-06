@@ -81,10 +81,16 @@ function handleItemCheckClicked() {
   });
 }
 
+function deleteList(itemIndex){
+  STORE.splice(itemIndex, 1);
+}
 
 function handleDeleteItemClicked() {
-  // this function will be responsible for when users want to delete a shopping list
-  // item
+  $('.js-shopping-list').on('click', '.js-item-delete', function(e){
+    const itemIndex = getItemIndexFromElement($(this));
+    deleteList(itemIndex);
+    renderShoppingList();
+  });
   console.log('`handleDeleteItemClicked` ran');
 }
 
