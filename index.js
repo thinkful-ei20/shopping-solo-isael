@@ -7,23 +7,40 @@ const STORE = {
     {name: 'milk', checked: true},
     {name: 'bread', checked: false}
   ],
-  filteredItems: []
+  filteredItems: [],
+  checkFilter: false,
+  searchVal: ''
 };
 
+function filterSearchName(val){
+  STORE.searchVal = val;
+}
+
+function searchListener(){
+  $('#search-button').click(event => {
+    let searchVal = $('#search-text').val(); 
+    filterSearchName(searchVal);
+    renderShoppingList();
+  });
+}
+
+function showALL(){
+  $('#show-all').click( event => {
+    STORE.searchVal = '';
+    renderShoppingList();
+  });
+}
+
 function filterChecked(bool){
-  if(bool){
-    STORE.filteredItems = STORE.items.filter(item => item.checked === true);
-    renderShoppingList();
-  }else{
-    STORE.filteredItems = STORE.items;
-    renderShoppingList();
-  }
+  if(bool) STORE.checkFilter = true;
+  if(!bool) STORE.checkFilter = false;
 }
 
 function checkedListener(){
   $('#check-box').on('click', event => {
     let isChecked = $(event.currentTarget).is(':checked'); 
     filterChecked(isChecked);
+    renderShoppingList();
   });
 }
 
@@ -55,8 +72,11 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
-  if(STORE.filteredItems.length === 0) STORE.filteredItems = STORE.items;
-  const shoppingListItemsString = generateShoppingItemsString(STORE.filteredItems);
+  let filteredItems = STORE.items;
+  if(STORE.checkFilter === true) filteredItems = STORE.items.filter( item => item.checked === true);
+  if(STORE.searchVal !== '') filteredItems = STORE.items.filter( item => item.name === STORE.searchVal);
+  //if(STORE.filteredItems.length === 0) STORE.filteredItems = STORE.items;
+  const shoppingListItemsString = generateShoppingItemsString(filteredItems);
 
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
@@ -66,6 +86,7 @@ function renderShoppingList() {
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
   STORE.items.push({name: itemName, checked: false});
+
 }
 
 function handleNewItemSubmit() {
@@ -124,6 +145,8 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   checkedListener();
+  searchListener();
+  showALL();
 }
 
 // when the page loads, call `handleShoppingList`
