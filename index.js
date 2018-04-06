@@ -6,7 +6,7 @@ const STORE = [
   {name: 'milk', checked: true},
   {name: 'bread', checked: false}
 ];
-
+let filteredItems = [...STORE];
 
 function generateItemElement(item, itemIndex, template) {
   if(template){
@@ -39,6 +39,19 @@ function generateItemElement(item, itemIndex, template) {
     </li>`;
   }
   
+}
+function generateSearchedShoppingItemsString(shoppingList, val){
+  const items = shoppingList.filter(item => item.name === val);
+  return items;
+}
+
+function searchListItem(){
+  $('#search-button').on('click', function(){
+    const searchVal = $('#search-text').val();
+    filteredItems = generateSearchedShoppingItemsString(STORE, searchVal);
+    renderShoppingList();
+    console.log([ ...STORE ]);
+  });
 }
 
 function generateCheckedShoppingItemsString(shoppingList, bool){
@@ -82,8 +95,10 @@ function generateShoppingItemsString(shoppingList) {
 
 function renderShoppingList() {
   // render the shopping list in the DOM
+  
+
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(filteredItems);
 
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
@@ -151,6 +166,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   checkFilter();
+  searchListItem();
 }
 
 // when the page loads, call `handleShoppingList`
