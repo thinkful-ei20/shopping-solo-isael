@@ -89,7 +89,7 @@ function renderShoppingList() {
   console.log('`renderShoppingList` ran');
   let filteredItems = STORE.items;
   if(STORE.checkFilter === true) filteredItems = STORE.items.filter( item => item.checked === true);
-  if(STORE.searchVal !== '') filteredItems = STORE.items.filter( item => item.name === STORE.searchVal);
+  if(STORE.searchVal !== '' && STORE.checkFilter === false) filteredItems = STORE.items.filter( item => item.name === STORE.searchVal);
   //if(STORE.filteredItems.length === 0) STORE.filteredItems = STORE.items;
   const shoppingListItemsString = generateShoppingItemsString(filteredItems);
 
