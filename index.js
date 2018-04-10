@@ -99,6 +99,7 @@ function renderShoppingList() {
 
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
+  if(itemName == '') return;
   STORE.items.push({name: itemName, checked: false});
 
 }
