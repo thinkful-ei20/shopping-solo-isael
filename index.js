@@ -7,7 +7,6 @@ const STORE = {
     {name: 'milk', checked: true},
     {name: 'bread', checked: false}
   ],
-  filteredItems: [],
   checkFilter: false,
   searchVal: ''
 };
@@ -59,7 +58,7 @@ function checkedListener(){
 
 function generateItemElement(item, itemIndex, template) {
   return `
-    <li class="js-item-index-element" data-item-index="${itemIndex}">
+    <li class="js-item-index-element" data-item-index="${STORE.items.indexOf(item)}">
       <input type="text" name="change-title" class="change-title" placeholder="change-title">
       <button type="button" id="change-title-button">Change</button>
       <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
@@ -88,7 +87,7 @@ function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
   let filteredItems = STORE.items;
-  if(STORE.checkFilter === true) filteredItems = STORE.items.filter( item => item.checked === true);
+  if(STORE.checkFilter === true) filteredItems = STORE.items.filter(item => item.checked === true);
   if(STORE.searchVal !== '' && STORE.checkFilter === false) filteredItems = STORE.items.filter( item => item.name === STORE.searchVal);
   //if(STORE.filteredItems.length === 0) STORE.filteredItems = STORE.items;
   const shoppingListItemsString = generateShoppingItemsString(filteredItems);
